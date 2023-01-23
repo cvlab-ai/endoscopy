@@ -1,7 +1,13 @@
 import os
 import shutil
-from enums import ExtendedEnum
+from enum import Enum
 from abc import ABC, abstractmethod
+
+
+class ExtendedEnum(Enum):
+    @classmethod
+    def list(cls):
+        return list(map(lambda c: c.value, cls))
 
 
 class AbstractCopyStrategy(ABC):
@@ -9,13 +15,16 @@ class AbstractCopyStrategy(ABC):
     def copy(self, src: str, dest: str) -> None:
         raise NotImplementedError
 
+
 class DuplicateCopyStrategy(AbstractCopyStrategy):
     def copy(self, src: str, dest: str) -> None:
         shutil.copy(src, dest)
 
+
 class SymlinkCopyStrategy(AbstractCopyStrategy):
     def copy(self, src: str, dest: str) -> None:
         os.symlink(src, dest)
+
 
 class CopyStrategy(ExtendedEnum):
     DUPLICATE = "duplicate"
