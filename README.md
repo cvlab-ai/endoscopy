@@ -67,10 +67,10 @@ python src\dataset_preparation\main.py
                [--train-size TRAIN_SIZE]
                [--test-size TEST_SIZE]
                [--validation-size VALIDATION_SIZE]
-               [--path-ignore-dataset-type PATH_IGNORE_DATASET_TYPE]
-               [--path-ignore-dataset-name PATH_IGNORE_DATASET_NAME]
-               [--path-ignore-img-type PATH_IGNORE_IMG_TYPE]
-               [--path-ignore-class-name PATH_IGNORE_CLASS_NAME]
+               [--path-ignore-dataset-type]
+               [--path-ignore-dataset-name]
+               [--path-ignore-img-type]
+               [--path-ignore-class-name]
                [--output-path OUTPUT_PATH]
                [-f, --force]
                [--copy-strategy {duplicate,symlink}]
@@ -87,8 +87,16 @@ python src\dataset_preparation\main.py
 
 Replace "HYPERKVASIR_PATH" and “ERS_PATH” with the path to your input images and "OUTPUT_PATH" with the path where you want to save the output sets. Use the optional arguments to specify the type of training, size of train, test and validation sets and various other options.
 
-More information presented in help option after running below command from project root
+e.g command to prepare data for [FCBFormer](https://github.com/ESandML/FCBFormer)
+```
+--ers-path "/raid/gwo/public/gastro/ers" --output-path "./fcb-ers" -f --binary --train-size 1.0 --test-size 0.0 --ers-class-mapper-path "mappers/2-class-polyp.yaml" --ers-use-seq --mask-mode "RGB" --path-ignore-dataset-name --path-ignore-dataset-type
+```
+e.g. command to prepare data for [ESFPNet](https://github.com/dumyCq/ESFPNet)
+```
+--ers-path "./ers" -f --binary  --train-size=0.8 --test-size=0.2 --ers-class-mapper-path "./mappers/2-class-polyp.yaml" --ers-use-seq  --training-type segmentation
+```
 
+More information presented in help option after running below command from project root  
 ```
 python src\dataset_preparation\main.py --help
 ```
@@ -96,21 +104,29 @@ python src\dataset_preparation\main.py --help
 -   `-h`, `--help`  
 show this help message and exit  
 - `--train-size TRAIN_SIZE`  
-Size of train set  
+Size of train set split (sum of train+test+validation size must equal 1)
 - `--test-size TEST_SIZE`  
-Size of test set  
+Size of test set split (sum of train+test+validation size must equal 1)
 - `--validation-size VALIDATION_SIZE`  
-Size of validation set  
-- `--path-ignore-dataset-type PATH_IGNORE_DATASET_TYPE`  
+Size of validation set split (sum of train+test+validation size must equal 1)
+- `--path-ignore-dataset-type`  
 Flag specyfing whether the output path should contain dataset-type (train/test/validation)  
-- `--path-ignore-dataset-name PATH_IGNORE_DATASET_NAME`  
+e.g. with flag → ers/images/polyp/1.png  
+without flag → test/ers/images/polyp/1.png
+- `--path-ignore-dataset-name`  
 Flag specyfing whether the output path should ignore dataset name (examples: hyperkvasir/ers)  
-- `--path-ignore-img-type PATH_IGNORE_IMG_TYPE`  
-Flag specyfing whether the output path should contain type of image (images/masks)  
-- `--path-ignore-class-name PATH_IGNORE_CLASS_NAME`  
-Flag specyfing whether the output path should contain class name (polyp/ulcer)  
+e.g. with flag → test/images/polyp/1.png  
+without flag → test/ers/images/polyp/1.png
+- `--path-ignore-img-type`  
+Flag specyfing whether the output path should ignore type of image (images/masks)  
+e.g. with flag → test/ers/polyp/1.png  
+without flag → test/ers/images/polyp/1.png
+- `--path-ignore-class-name`  
+Flag specyfing whether the output path should ignore class name (polyp/ulcer)  
+e.g. with flag -> test/ers/images/1.png  
+without flag -> test/ers/images/polyp/1.png
 - `--output-path OUTPUT_PATH`  
-Output path for generated data (should be empty)  
+Output path for generated data (path content should be empty, no folders nor files inside, otherwise use -f to force clear)  
 - `-f`, `--force`  
 Clears output-path if anything exists  
 - `--copy-strategy {duplicate,symlink}`  
