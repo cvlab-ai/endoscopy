@@ -17,6 +17,7 @@ class DataSplitter:
         if not 'patient_id' in data.columns:
             data['patient_id'] = pd.Series()
         data = self.__fill_empty_patients_id(data)
+
         data.sort_values(by=['img_path'], inplace=True)
 
         return (self.__prepare(x) for x in self.__split(data))
@@ -46,13 +47,12 @@ class DataSplitter:
 
         rel_test_part = test_part / (test_part + val_part)
         rel_val_part = 1.0 - rel_test_part
-
         gss = GroupShuffleSplit(train_size=rel_val_part, random_state=self.random_state, n_splits=1)
         val_idx, test_idx = next(gss.split(X_temp, y_temp, groups_temp))
 
-        print(f"Data of size {data.shape[0]} split to sizes: \n train_size={len(train_idx)} \n validation_size={len(val_idx)} \n test_size={len(test_idx)}")
+        print(f"Data split to sizes: \n train_size={len(train_idx)} \n validation_size={len(val_idx)} \n test_size={len(test_idx)}")
 
-        return data.iloc[train_idx], X_temp.iloc[val_idx], X_temp.iloc[test_idx]
+        return data.iloc[train_idx], data.iloc[val_idx], data.iloc[test_idx]
 
     def __prepare(self, data: pd.DataFrame) -> pd.DataFrame:
         data = self.__shuffle_data(data)

@@ -19,7 +19,7 @@ class DatasetCreator:
         self.ers_preparator = ErsPreparator(args)
         self.hkvs_preparator = HyperkvasirPreparator(args)
 
-        self.copy_mask = args.training_type == TrainingType.SEGMENTATION
+        self.copy_mask = args.training_type == TrainingType.SEGMENTATION,
 
     def create(self) -> None:
         df = self.__generate_dataframes()
@@ -34,8 +34,6 @@ class DatasetCreator:
         print("Dataset prepared")
 
     def __fill_output_dir(self, df: pd.DataFrame, type: str):
-        print(f"Processing images from {type} dataset")
-
         for loop_index, data in enumerate(df.iterrows()):
             self.__generate_output_record(data, type)
         
@@ -57,11 +55,11 @@ class DatasetCreator:
         self.image_writer.write_image(src_img_path, dest_img_path)
         
         if self.copy_mask:
-            src_masks_paths = record['masks_paths']
+            src_mask_path = record['mask_path']
             reverse_color = record['reverse_mask']
 
             dest_mask_path = self.path_creator.create(dataset_type=type, dataset_name=dataset_name, img_type='masks', class_name=class_name, file_name=dest_img_name)
-            self.image_writer.write_masks(src_masks_paths, dest_mask_path, reverse_color=reverse_color, base_img_src=src_img_path)
+            self.image_writer.write_mask(src_mask_path, dest_mask_path, reverse_color=reverse_color, base_img_src=src_img_path)
 
     
     def __generate_dataframes(self) -> pd.DataFrame:

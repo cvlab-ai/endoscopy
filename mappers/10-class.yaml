@@ -1,93 +1,35 @@
-polyp:
-  classes:
-    - c22
-    - g14
-    - g31
-    - g45
-  healthy: false
-cancer:
-  classes:
-    - c05
-    - g11
-    - g26
-    - g39
-  healthy: false
-ulcer:
-  classes:
-    - c26
-    - c27
-    - c32
-    - g18
-    - g19
-    - g50
-    - g51
-    - g52
-  healthy: false
-blood:
-  classes:
-    - b01
-    - c02
-    - c05
-    - g05
-    - g08
-    - g19
-    - g39
-    - g51
-  healthy: false
-inflamation:
-  classes:
-    - c03
-    - c16
-    - c25
-    - c32
-    - c34
-    - g03
-    - g18
-    - g20
-    - g22
-    - g23
-    - g54
-    - g55
-    - g56
-    - g57
-    - g59
-    - g63
-    - g67
-  healthy: false
-crohn:
-  classes:
-    - c17
-    - c31
-    - g09
-    - g24
-    - g33
-    - g35
-    - g44
-    - g70
-  healthy: false
-diverticulum:
-  classes:
-    - c12
-    - c13
-    - g28
-    - g29
-    - g40
-    - g41
-  healthy: false
-blur:
-  classes:
-    - q02
-    - q05
-    - q07
-    - g09
-  healthy: true # We state that it's true, cause we want the mask to be all white
-normal:
-  classes:
-    - h01
-    - h02
-    - h03
-    - h05
-    - h06
-    - h07
-    - b02
-  healthy: true
+g07: crohn
+g11: cancer
+g14: polyp
+g18: ulcer
+g19: ulcer
+g26: cancer
+g28: diverticulum
+g31: polyp
+g36: varicose
+g39: cancer
+g40: diverticulum
+g45: polyp
+g50: ulcer
+g51: ulcer
+g52: ulcer
+g53: varicose
+c02: blood
+c05: cancer
+c08: crohn
+c10: crohn
+c11: diverticulum
+c22: diverticulum
+c22: polyp
+c26: ulcer
+c27: ulcer
+c28: inflamation
+h01: normal
+h02: normal
+h03: normal
+h05: normal
+h06: normal
+h07: normal
+b01: blood
+b02: normal
+q02: blur

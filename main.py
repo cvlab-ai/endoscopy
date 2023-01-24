@@ -80,7 +80,7 @@ def setup_argument_parser():
                         help="Clears output-path if anything exists")
     parser.add_argument("--copy-strategy",
                         help="Strategy used when copying unmodified files to ouput dir",
-                        default=CopyStrategy.DUPLICATE if sys.platform == "win32" else CopyStrategy.SYMLINK,
+                        default=CopyStrategy.SYMLINK if sys.platform == "Linux" else CopyStrategy.DUPLICATE,
                         type=CopyStrategy,
                         choices=list(CopyStrategy),
                         required=False)                        
@@ -166,8 +166,6 @@ def parse_args():
         print("[INFO] Ignoring class names in output paths for binary classification")
     if args.copy_strategy == CopyStrategy.SYMLINK:
         print("[INFO] Chosen copy strategy is SYMLINK. Keep in mind that the script may still sometimes create new image files in the output dataset")
-    if args.ers_class_mapper_path is None and args.ers_path is not None:
-        print("[INFO] No ERS mapper specified. Default behaviour will be used.")
 
     return args
 
