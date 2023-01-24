@@ -28,7 +28,7 @@ class HyperkvasirPreparator:
                     'patient_id': None,
                     'class': "polyp",
                     'img_path': os.path.join(images_path, filename),
-                    'mask_path': os.path.join(masks_path, filename),
+                    'masks_paths': [os.path.join(masks_path, filename)],
                     'reverse_mask': not self.binary,
                     'dataset': "hyperkvasir"
                 }
