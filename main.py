@@ -36,42 +36,37 @@ def setup_argument_parser():
     parser.add_argument("--train-size",
                         type=float,
                         default=EMPTY_FLOAT,
-                        help="Size of train set",
+                        help="Size of train set split (sum of train+test+validation size must equal 1)",
                         required=False)
     parser.add_argument("--test-size",
                         type=float,
                         default=EMPTY_FLOAT,
-                        help="Size of test set",
+                        help="Size of test set split (sum of train+test+validation size must equal 1)",
                         required=False)
     parser.add_argument("--validation-size",
                         type=float,
                         default=EMPTY_FLOAT,
-                        help="Size of validation set",
+                        help="Size of validation set split (sum of train+test+validation size must equal 1)",
                         required=False)
 
     #Dataset output options
     parser.add_argument("--path-ignore-dataset-type",
-                        help="Flag specyfing whether the output path should contain dataset-type (train/test/validation)",
+                        help="Flag specyfing whether the output path should ignore dataset-type (train/test/validation) e.g. with flag -> ers/images/polyp/1.png, without flag -> test/ers/images/polyp/1.png",
                         default=False,
-                        type=bool,
+                        action="store_true",
                         required=False)
     parser.add_argument("--path-ignore-dataset-name",
-                        help="Flag specyfing whether the output path should ignore dataset name (examples: hyperkvasir/ers)",
-                        default=True,
-                        type=bool,
-                        required=False)
-    parser.add_argument("--path-ignore-img-type",
-                        help="Flag specyfing whether the output path should contain type of image (images/masks)",
+                        help="Flag specyfing whether the output path should ignore dataset name (examples: hyperkvasir/ers) e.g. with flag -> test/images/polyp/1.png, without flag -> test/ers/images/polyp/1.png",
                         default=False,
-                        type=bool,
+                        action="store_true",
                         required=False)
     parser.add_argument("--path-ignore-class-name",
-                        help="Flag specyfing whether the output path should contain class name (polyp/ulcer)",
+                        help="Flag specyfing whether the output path should ignore class name (polyp/ulcer) e.g. with flag -> test/ers/images/1.png, without flag -> test/ers/images/polyp/1.png",
                         default=False,
-                        type=bool,
+                        action="store_true",
                         required=False)
     parser.add_argument("--output-path",
-                        help="Output path for generated data (should be empty)",
+                        help="Output path for generated data (path content should be empty, no folders nor files inside, otherwise use -f to force clear)",
                         default="./data",
                         type=str,
                         required=False)
@@ -79,7 +74,7 @@ def setup_argument_parser():
                         action="store_true",
                         help="Clears output-path if anything exists")
     parser.add_argument("--copy-strategy",
-                        help="Strategy used when copying unmodified files to ouput dir",
+                        help="Strategy used when copying unmodified files to output dir",
                         default=CopyStrategy.DUPLICATE if sys.platform == "win32" else CopyStrategy.SYMLINK,
                         type=CopyStrategy,
                         choices=list(CopyStrategy),

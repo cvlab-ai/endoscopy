@@ -83,7 +83,6 @@ class DatasetCreator:
             output_path,
             ignore_dataset_type=args.path_ignore_dataset_type,
             ignore_dataset_name=args.path_ignore_dataset_name,
-            ignore_img_type=args.path_ignore_img_type,
             ignore_class_name=args.path_ignore_class_name)
 
     @staticmethod
