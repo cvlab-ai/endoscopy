@@ -60,11 +60,6 @@ def setup_argument_parser():
                         default=False,
                         action="store_true",
                         required=False)
-    parser.add_argument("--path-ignore-img-type",
-                        help="Flag specyfing whether the output path should ignore type of image (images/masks) e.g. with flag -> test/ers/polyp/1.png, without flag -> test/ers/images/polyp/1.png",
-                        default=False,
-                        action="store_true",
-                        required=False)
     parser.add_argument("--path-ignore-class-name",
                         help="Flag specyfing whether the output path should ignore class name (polyp/ulcer) e.g. with flag -> test/ers/images/1.png, without flag -> test/ers/images/polyp/1.png",
                         default=False,

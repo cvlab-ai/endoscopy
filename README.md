@@ -69,7 +69,6 @@ python src\dataset_preparation\main.py
                [--validation-size VALIDATION_SIZE]
                [--path-ignore-dataset-type]
                [--path-ignore-dataset-name]
-               [--path-ignore-img-type]
                [--path-ignore-class-name]
                [--output-path OUTPUT_PATH]
                [-f, --force]
@@ -117,10 +116,6 @@ without flag → test/ers/images/polyp/1.png
 Flag specyfing whether the output path should ignore dataset name (examples: hyperkvasir/ers)  
 e.g. with flag → test/images/polyp/1.png  
 without flag → test/ers/images/polyp/1.png
-- `--path-ignore-img-type`  
-Flag specyfing whether the output path should ignore type of image (images/masks)  
-e.g. with flag → test/ers/polyp/1.png  
-without flag → test/ers/images/polyp/1.png
 - `--path-ignore-class-name`  
 Flag specyfing whether the output path should ignore class name (polyp/ulcer)  
 e.g. with flag -> test/ers/images/1.png  
@@ -163,4 +158,4 @@ Mappers directory contains mapping files for 2, 5 and 10 class problems (2-class
 ### Additional information
 hyperkvasir dataset does not provide patient id. It is highly likely that samples from one patient will be split accross more than one of: train, test, or validation datasets.  
 ERS multi label images are copied multiple times  the number of copies is equal to the number of classes.  
-Output path can be configured as follows: (output-path)/(dataset-type)/(dataset-name)/(img-type)/(class-name)  
+Output path can be configured as follows: (output-path)/(dataset-type)/(dataset-name)/(images|masks)/(class-name)  
