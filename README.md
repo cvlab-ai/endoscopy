@@ -89,16 +89,16 @@ Replace "HYPERKVASIR_PATH" and “ERS_PATH” with the path to your input images
 
 e.g command to prepare data for [FCBFormer](https://github.com/ESandML/FCBFormer)
 ```
---ers-path "/raid/gwo/public/gastro/ers" --output-path "./fcb-ers" -f --binary --train-size 1.0 --test-size 0.0 --ers-class-mapper-path "mappers/2-class-polyp.yaml" --ers-use-seq --mask-mode "RGB" --path-ignore-dataset-name --path-ignore-dataset-type
+python3 main.py --ers-path "/raid/gwo/public/gastro/ers" --output-path "./fcb-ers" -f --binary --train-size 1.0 --test-size 0.0 --ers-class-mapper-path "mappers/2-class-polyp.yaml" --ers-use-seq --mask-mode "RGB" --path-ignore-dataset-name --path-ignore-dataset-type
 ```
 e.g. command to prepare data for [ESFPNet](https://github.com/dumyCq/ESFPNet)
 ```
---ers-path "./ers" -f --binary  --train-size=0.8 --test-size=0.2 --ers-class-mapper-path "./mappers/2-class-polyp.yaml" --ers-use-seq  --training-type segmentation
+python3 main.py --ers-path "./ers" -f --binary  --train-size=0.8 --test-size=0.2 --ers-class-mapper-path "./mappers/2-class-polyp.yaml" --ers-use-seq  --training-type segmentation
 ```
 
 More information presented in help option after running below command from project root  
 ```
-python src\dataset_preparation\main.py --help
+python3 main.py --help
 ```
 
 -   `-h`, `--help`  
