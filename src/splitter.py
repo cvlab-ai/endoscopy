@@ -26,6 +26,13 @@ class DataSplitter:
         val_part = self.val_part
         test_part = 1.0 - train_part - val_part
 
+        if test_part == 1.0:
+            return data.iloc[:0,:].copy(), data.iloc[:0,:].copy(), data
+        elif val_part == 1.0:
+            return data.iloc[:0,:].copy(), data, data.iloc[:0,:].copy()
+        elif train_part == 1.0:
+            return data, data.iloc[:0,:].copy(), data.iloc[:0,:].copy()
+
         X = data
         y = data[['class']]
         groups = data[['patient_id']]
