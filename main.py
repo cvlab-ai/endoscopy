@@ -153,6 +153,8 @@ def parse_args():
         print("[INFO] No ERS mapper specified. Default behaviour will be used.")
     if args.training_type == TrainingType.MULTILABEL_CLASSIFICATION and args.mask_mode is not None:
         print("[INFO] Ignoring mask-mode parameter for classifcation training type")
+    if args.hyperkvasir_path is not None and args.training_type != TrainingType.BINARY_SEG:
+        print("[INFO] It is not recommended to use hyperkvasir feature of this script for non binary segmentation purposes")
 
     return args
 
