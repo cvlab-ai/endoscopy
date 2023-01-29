@@ -1,12 +1,12 @@
 import pandas as pd
 import os
 from typing import List
+from src.structs import MergedMaskData, MaskRepresentantion
 
 
 class HyperkvasirPreparator:
 
     def __init__(self, args) -> None:
-        self.binary = args.binary
         self.dataset_path = args.hyperkvasir_path
 
     def generate_dataframe(self) -> pd.DataFrame:
@@ -23,17 +23,14 @@ class HyperkvasirPreparator:
 
         data = []
         for filename in filenames:
-            data.append(
-                {
-                    'patient_id': None,
-                    'class': "polyp",
-                    'img_path': os.path.join(images_path, filename),
-                    'masks_paths': [os.path.join(masks_path, filename)],
-                    'reverse_mask': not self.binary,
-                    'dataset': "hyperkvasir"
-                }
-            )
-
+            data.append({
+                'dataset': 'hyperkvasir',
+                'patient_id': None,
+                'frame_path': os.path.join(images_path, filename),
+                'proposed_name': filename,
+                'mask_data': [MergedMaskData('polyp', [MaskRepresentantion.of_path(os.path.join(masks_path, filename))])]
+            })
+            
         return pd.DataFrame(data)
 
     def __list_files(self, path: str) -> List[str]:
