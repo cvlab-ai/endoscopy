@@ -88,9 +88,6 @@ def setup_argument_parser():
                         choices=list(TrainingType),
                         help="Type of training",
                         required=True)
-    parser.add_argument("--binary",
-                        help="Flag specifying whether the segmentation should be binary. This means no classes, just masks. Only classes mapped in class mapper will be used.",
-                        action="store_true")
 
     #Hyperkvasir
     parser.add_argument("--hyperkvasir-path",

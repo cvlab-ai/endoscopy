@@ -70,7 +70,7 @@ class ImageWriter:
             return self.__create_mask_based_on_frame(color_str=self.__convert_to_pil_color_str(mask_repr.color), desired_mode='L', base_img_src=base_img_src)
 
         if os.path.getsize(mask_repr.mask_path) == 0:
-            return self.__create_mask_based_on_frame(color_str='whte', desired_mode='L', base_img_src=base_img_src)
+            return self.__create_mask_based_on_frame(color_str='white', desired_mode='L', base_img_src=base_img_src)
         
         img = Image.open(mask_repr.mask_path)
         img = img.convert('L')
