@@ -25,7 +25,7 @@ class MaskDataMerger:
 
 
     def __map_classes(self, masks_data: List[UnmergedMaskData], mapper: AbstractClassMapper) -> List[UnmergedMaskData]:
-        if not self.allow_ambigous_mappings:
+        if not self.allow_ambigous_mappings: # For binary segmentantion this drop is justified. For multilabel - it's debatable
             masks_data = self.__drop_records_where_single_mask_is_mapped_to_multiple_sets_of_classes(masks_data, mapper)
 
         result = []
