@@ -17,7 +17,6 @@ def dir_path(path):
     raise NotADirectoryError(path)
 
 def file_path(path):
-    print(path)
     if os.path.isfile(path):
         return path
     raise FileNotFoundError(path)
@@ -60,11 +59,6 @@ def setup_argument_parser():
                         default=False,
                         action="store_true",
                         required=False)
-    parser.add_argument("--path-ignore-class-name",
-                        help="Flag specyfing whether the output path should ignore class name (polyp/ulcer) e.g. with flag -> test/ers/images/1.png, without flag -> test/ers/images/polyp/1.png",
-                        default=False,
-                        action="store_true",
-                        required=False)
     parser.add_argument("--output-path",
                         help="Output path for generated data (path content should be empty, no folders nor files inside, otherwise use -f to force clear)",
                         default="./data",
@@ -92,12 +86,8 @@ def setup_argument_parser():
     parser.add_argument('--training-type',
                         type=TrainingType,
                         choices=list(TrainingType),
-                        default=TrainingType.SEGMENTATION,
                         help="Type of training",
-                        required=False)
-    parser.add_argument("--binary",
-                        help="Flag specifying whether the segmentation should be binary. This means no classes, just masks. Only classes mapped in class mapper will be used.",
-                        action="store_true")
+                        required=True)
 
     #Hyperkvasir
     parser.add_argument("--hyperkvasir-path",
@@ -115,7 +105,7 @@ def setup_argument_parser():
                         help="Use sequences for ERS dataset (e.g. \"seq_01\")")
     parser.add_argument("--ers-use-empty-masks",
                         action="store_true",
-                        help="Flag specifying whether images with empty masks should be used for segmentation")
+                        help="Flag specifying whether images with empty mask files should be used for segmentation. Independently, script will use empty mas files that belong to healthy classes.")
     parser.add_argument("--ers-class-mapper-path",
                         type=file_path,
                         help="Localization of class mapper yaml file. Mapping is done only for ers dataset. Records with keys that are not mapped in the file will be skipped.",
@@ -151,18 +141,17 @@ def parse_args():
         parser.error("Sum of --train-size,--test-size and --validation-size should be equal 1.0")
     if args.force is False and os.path.isdir(args.output_path) and not is_dir_empty(args.output_path):
         parser.error("Output directory should be empty. Use -f to force clean")
-    if args.ers_use_empty_masks == False and args.training_type == TrainingType.CLASSIFICATION:
+    if args.ers_use_empty_masks == False and args.training_type == TrainingType.MULTILABEL_CLASSIFICATION:
         args.ers_use_empty_masks = True
         print("[INFO] Ignoring '--ers-use-empty-masks' parameter, since training type is classification")
-    if args.binary == True and args.training_type == TrainingType:
-        parser.error("Binary segmentation is not supported for the classification training type")
-    if args.binary == True:
-        args.path_ignore_class_name = True
-        print("[INFO] Ignoring class names in output paths for binary classification")
     if args.copy_strategy == CopyStrategy.SYMLINK:
         print("[INFO] Chosen copy strategy is SYMLINK. Keep in mind that the script may still sometimes create new image files in the output dataset")
     if args.ers_class_mapper_path is None and args.ers_path is not None:
         print("[INFO] No ERS mapper specified. Default behaviour will be used.")
+    if args.training_type == TrainingType.MULTILABEL_CLASSIFICATION and args.mask_mode is not None:
+        print("[INFO] Ignoring mask-mode parameter for classifcation training type")
+    if args.hyperkvasir_path is not None and args.training_type != TrainingType.BINARY_SEG:
+        print("[INFO] It is not recommended to use hyperkvasir feature of this script for non binary segmentation purposes")
 
     return args
 

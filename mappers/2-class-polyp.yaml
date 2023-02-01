@@ -4,7 +4,7 @@ polyp:
     - g14
     - g31
     - g45
-  healthy: false
+  positive: true
 normal:
   classes:
     - h01
@@ -14,4 +14,4 @@ normal:
     - h06
     - h07
     - b02
-  healthy: true
+  positive: false

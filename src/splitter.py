@@ -17,7 +17,7 @@ class DataSplitter:
         if not 'patient_id' in data.columns:
             data['patient_id'] = pd.Series()
         data = self.__fill_empty_patients_id(data)
-        data.sort_values(by=['img_path'], inplace=True)
+        data.sort_values(by=['frame_path'], inplace=True)
 
         return (self.__prepare(x) for x in self.__split(data))
     
@@ -34,19 +34,17 @@ class DataSplitter:
             return data, data.iloc[:0,:].copy(), data.iloc[:0,:].copy()
 
         X = data
-        y = data[['class']]
+        y = data[['mask_data']]
         groups = data[['patient_id']]
         train_idx, temp_idx = self.__split_with_boundary_awareness(train_part, X, y, groups)
 
         X_temp = data.iloc[temp_idx]
-        y_temp = X_temp[['class']]
+        y_temp = X_temp[['mask_data']]
         groups_temp = X_temp[['patient_id']]
 
         rel_test_part = test_part / (test_part + val_part)
         rel_val_part = 1.0 - rel_test_part
         val_idx, test_idx = self.__split_with_boundary_awareness(rel_val_part, X_temp, y_temp, groups_temp)
-
-        print(f"Data of size {data.shape[0]} split to sizes: \n train_size={len(train_idx)} \n validation_size={len(val_idx)} \n test_size={len(test_idx)}")
 
         return data.iloc[train_idx], X_temp.iloc[val_idx], X_temp.iloc[test_idx]
 

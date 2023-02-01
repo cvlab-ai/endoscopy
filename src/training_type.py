@@ -8,8 +8,9 @@ class ExtendedEnum(Enum):
 
 
 class TrainingType(ExtendedEnum):
-    SEGMENTATION = "segmentation"
-    CLASSIFICATION = "classification"
+    BINARY_SEG = "binary-seg"
+    MULTILABEL_SEG = "multilabel-seg"
+    MULTILABEL_CLASSIFICATION = "multilabel-classification"
 
     def __str__(self):
         return self.value.lower()

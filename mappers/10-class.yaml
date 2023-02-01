@@ -4,14 +4,12 @@ polyp:
     - g14
     - g31
     - g45
-  healthy: false
 cancer:
   classes:
     - c05
     - g11
     - g26
     - g39
-  healthy: false
 ulcer:
   classes:
     - c26
@@ -22,7 +20,6 @@ ulcer:
     - g50
     - g51
     - g52
-  healthy: false
 blood:
   classes:
     - b01
@@ -33,7 +30,6 @@ blood:
     - g19
     - g39
     - g51
-  healthy: false
 inflamation:
   classes:
     - c03
@@ -53,7 +49,6 @@ inflamation:
     - g59
     - g63
     - g67
-  healthy: false
 crohn:
   classes:
     - c17
@@ -64,7 +59,6 @@ crohn:
     - g35
     - g44
     - g70
-  healthy: false
 diverticulum:
   classes:
     - c12
@@ -73,14 +67,12 @@ diverticulum:
     - g29
     - g40
     - g41
-  healthy: false
 blur:
   classes:
     - q02
     - q05
     - q07
     - g09
-  healthy: true # We state that it's true, cause we want the mask to be all white
 normal:
   classes:
     - h01
@@ -90,4 +82,3 @@ normal:
     - h06
     - h07
     - b02
-  healthy: true

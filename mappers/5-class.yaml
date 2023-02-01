@@ -4,14 +4,12 @@ polyp:
     - g14
     - g31
     - g45
-  healthy: false
 cancer:
   classes:
     - c05
     - g11
     - g26
     - g39
-  healthy: false
 ulcer:
   classes:
     - c26
@@ -22,7 +20,6 @@ ulcer:
     - g50
     - g51
     - g52
-  healthy: false
 blood:
   classes:
     - b01
@@ -33,7 +30,6 @@ blood:
     - g19
     - g39
     - g51
-  healthy: false
 normal:
   classes:
     - h01
@@ -43,4 +39,3 @@ normal:
     - h06
     - h07
     - b02
-  healthy: true

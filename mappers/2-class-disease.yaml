@@ -1,5 +1,6 @@
 disease:
   classes:
+    - b01
     - c01
     - c02
     - c03
@@ -81,7 +82,7 @@ disease:
     - g68
     - g69
     - g70
-  healthy: false
+  positive: true
 normal:
   classes:
     - h01
@@ -91,4 +92,4 @@ normal:
     - h06
     - h07
     - b02
-  healthy: true
+  positive: false
