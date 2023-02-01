@@ -2,7 +2,7 @@ import os
 from typing import List, Optional
 from PIL import Image, ImageColor
 from src.copy_strategy import AbstractCopyStrategy
-from src.structs import MaskRepresentantion, MaskColor
+from src.structs import MaskRepresentation, MaskColor
 
 class ImageWriter:
 
@@ -21,7 +21,7 @@ class ImageWriter:
             img = img.convert(self.img_mode)
             img.save(dest)
 
-    def write_mask(self, mask_reps: List[MaskRepresentantion], dest: str, base_img_src: str) -> None:
+    def write_mask(self, mask_reps: List[MaskRepresentation], dest: str, base_img_src: str) -> None:
         os.makedirs(os.path.dirname(dest), exist_ok=True)
 
         if len(mask_reps) > 1:
@@ -29,9 +29,9 @@ class ImageWriter:
         elif len(mask_reps) == 1:
             self.__write_single_mask_repr(mask_reps[0], dest, base_img_src)
         else:
-            raise "Invalid State: write_masks method called with empty source list."
+            raise ValueError("Invalid State: write_masks method called with empty source list.")
 
-    def __write_single_mask_repr(self, mask_repr: MaskRepresentantion, dest: str, base_img_src: str) -> None:
+    def __write_single_mask_repr(self, mask_repr: MaskRepresentation, dest: str, base_img_src: str) -> None:
         if mask_repr.is_of_color():
             img = self.__create_mask_based_on_frame(color_str=self.__convert_to_pil_color_str(mask_repr.color), desired_mode=self.mask_mode, base_img_src=base_img_src)
             img.save(dest)
@@ -52,7 +52,7 @@ class ImageWriter:
                 img = img.convert(self.mask_mode)
                 img.save(dest)
             
-    def __write_merged_masks(self, mask_reps: List[MaskRepresentantion], dest: str, base_img_src: str) -> None:
+    def __write_merged_masks(self, mask_reps: List[MaskRepresentation], dest: str, base_img_src: str) -> None:
         base_img = Image.open(base_img_src)
         desired_size = base_img.size
         desired_mode = self.mask_mode if self.mask_mode is not None else base_img.mode
@@ -65,7 +65,7 @@ class ImageWriter:
         img = img.convert(desired_mode)
         img.save(dest)
 
-    def __prepare_mask_image_to_merge(self, mask_repr: MaskRepresentantion, base_img_src: str) -> Image:
+    def __prepare_mask_image_to_merge(self, mask_repr: MaskRepresentation, base_img_src: str) -> Image:
         if mask_repr.is_of_color():
             return self.__create_mask_based_on_frame(color_str=self.__convert_to_pil_color_str(mask_repr.color), desired_mode='L', base_img_src=base_img_src)
 
@@ -89,4 +89,4 @@ class ImageWriter:
             return "black"
         if mask_color == MaskColor.WHITE:
             return "white"
-        raise f"Invalid State: {mask_color} not supported!"
+        raise ValueError(f"Invalid State: {mask_color} not supported!")

@@ -60,7 +60,7 @@ class DataSplitter:
 
     def __prepare(self, data: pd.DataFrame) -> pd.DataFrame:
         data = self.__shuffle_data(data)
-        data = self.__drop_uneccessary_data(data)
+        data = self.__drop_unnecessary_data(data)
         return data
 
     def __fill_empty_patients_id(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -72,5 +72,5 @@ class DataSplitter:
     def __shuffle_data(self, data: pd.DataFrame) -> pd.DataFrame:
         return data.iloc[np.random.permutation(len(data))]
 
-    def __drop_uneccessary_data(self, data: pd.DataFrame) -> pd.DataFrame:
+    def __drop_unnecessary_data(self, data: pd.DataFrame) -> pd.DataFrame:
         return data.drop("patient_id", axis='columns', errors='ignore')
