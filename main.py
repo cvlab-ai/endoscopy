@@ -114,9 +114,9 @@ def setup_argument_parser():
     return parser
 
 
-def parse_args():
+def parse_args(args):
     parser = setup_argument_parser()
-    args = parser.parse_args()
+    args = parser.parse_args(args)
 
     if args.hyperkvasir_path is None and args.ers_path is None:
         parser.error("At least one of --hyperkvasir-path and --ers-path required")
@@ -130,7 +130,17 @@ def parse_args():
         args.test_size = DEFAULT_TEST_SIZE
         args.validation_size = DEFAULT_VALIDATION_SIZE
     elif missing_sizes_count > 1:
-        parser.error("Only one of --train-size,--test-size and --validation-size can be skipped")
+        if args.train_size == 1:
+            args.test_size = 0
+            args.validation_size = 0
+        elif args.test_size == 1:
+            args.train_size = 0
+            args.validation_size = 0
+        elif args.validation_size == 1:
+            args.train_size = 0
+            args.test_size = 0
+        else:
+            parser.error("Only one of --train-size,--test-size and --validation-size can be skipped (set one to 1.0 or provide another one)")
     if args.train_size == EMPTY_FLOAT:
         args.train_size = 1 - args.test_size - args.validation_size
     if args.test_size == EMPTY_FLOAT:
@@ -156,11 +166,11 @@ def parse_args():
     return args
 
 
-def main():
+def main(args):
     setup_argument_parser()
-    args = parse_args()
+    args = parse_args(args)
     DatasetCreator(args).create()
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
