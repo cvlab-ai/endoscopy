@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 from typing import List
-from src.structs import MergedMaskData, MaskRepresentantion
+from src.structs import MergedMaskData, MaskRepresentation
 
 
 class HyperkvasirPreparator:
@@ -28,7 +28,7 @@ class HyperkvasirPreparator:
                 'patient_id': None,
                 'frame_path': os.path.join(images_path, filename),
                 'proposed_name': filename,
-                'mask_data': [MergedMaskData('polyp', [MaskRepresentantion.of_path(os.path.join(masks_path, filename))])]
+                'mask_data': [MergedMaskData('polyp', [MaskRepresentation.of_path(os.path.join(masks_path, filename))])]
             })
             
         return pd.DataFrame(data)

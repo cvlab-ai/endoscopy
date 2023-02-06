@@ -1,12 +1,12 @@
 from typing import List, Optional
 from src.training_type import TrainingType
 from src.class_mappers import AbstractClassMapper
-from src.structs import UnmergedMaskData, MergedMaskData, MaskRepresentantion, MaskColor
+from src.structs import UnmergedMaskData, MergedMaskData, MaskRepresentation, MaskColor
 
 class MaskDataMerger:
     def __init__(self, args) -> None:
         self.binary = args.training_type == TrainingType.BINARY_SEG
-        self.allow_ambigous_mappings = args.training_type == TrainingType.MULTILABEL_CLASSIFICATION
+        self.allow_ambiguous_mappings = args.training_type == TrainingType.MULTILABEL_CLASSIFICATION
 
     def merge(self, masks_data: List[UnmergedMaskData], mapper: AbstractClassMapper) -> Optional[List[MergedMaskData]]:
         unmerged_mask_data_with_mapped_classes = self.__map_classes(masks_data, mapper)
@@ -15,7 +15,7 @@ class MaskDataMerger:
         merged_mask_data = []
         for processed_class in all_mapped_classes:
             if self.binary and not mapper.is_positive(processed_class):
-                merged_mask_data.append(MergedMaskData(processed_class, [MaskRepresentantion.of_color(MaskColor.BLACK)]))
+                merged_mask_data.append(MergedMaskData(processed_class, [MaskRepresentation.of_color(MaskColor.BLACK)]))
             else:
                 masks_paths_of_class = [mask_data.mask_path for mask_data in unmerged_mask_data_with_mapped_classes if mask_data.class_name == processed_class]
                 merged_mask = self.__merge_masks_data(masks_paths_of_class, processed_class)
@@ -25,7 +25,7 @@ class MaskDataMerger:
 
 
     def __map_classes(self, masks_data: List[UnmergedMaskData], mapper: AbstractClassMapper) -> List[UnmergedMaskData]:
-        if not self.allow_ambigous_mappings: # For binary segmentantion this drop is justified. For multilabel - it's debatable
+        if not self.allow_ambiguous_mappings: # For binary segmentation this drop is justified. For multilabel - it's debatable
             masks_data = self.__drop_records_where_single_mask_is_mapped_to_multiple_sets_of_classes(masks_data, mapper)
 
         result = []
@@ -57,6 +57,6 @@ class MaskDataMerger:
         
 
     def __merge_masks_data(self, masks_paths: List[str], class_name: str) -> MergedMaskData:
-        masks_repr = [MaskRepresentantion.of_path(mask_path) for mask_path in masks_paths]
+        masks_repr = [MaskRepresentation.of_path(mask_path) for mask_path in masks_paths]
         return MergedMaskData(class_name, masks_repr)
 

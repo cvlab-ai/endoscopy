@@ -1,0 +1,14 @@
+disease:
+  classes:
+    - c01
+disease2:
+  classes:
+    - c02
+    - c03
+normal:
+  classes:
+    - h01
+normal2:
+  classes:
+    - h02
+    - h03

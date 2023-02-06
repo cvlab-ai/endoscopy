@@ -26,9 +26,9 @@ def is_dir_empty(path):
 
 def setup_argument_parser():
     epilog = """
-        [INFO] hyperkvasir dataset does not provide patient id. It is highly likely that samples from one patient will be split accross more than one of: train, test, or validation datasets.
+        [INFO] hyperkvasir dataset does not provide patient id. It is highly likely that samples from one patient will be split across more than one of: train, test, or validation datasets.
         [INFO] ERS multi label images are copied multiple times - the number of copies is equal to the number of classes.
-        [INFO] Output path can be configured as follows: (output-path)/(dataset-type)/(dataset-name)/(img-type)/(class-name)
+        [INFO] Output path can be configured as follows: (output-path)/(dataset-type)/(dataset-name)/(img-type)/(class-name) e.g. home/train/ERS/image/polyp
     """
     parser = argparse.ArgumentParser(description='Dataset preparator', epilog=epilog, formatter_class=argparse.RawDescriptionHelpFormatter)
     #Dataset size:
@@ -50,12 +50,12 @@ def setup_argument_parser():
 
     #Dataset output options
     parser.add_argument("--path-ignore-dataset-type",
-                        help="Flag specyfing whether the output path should ignore dataset-type (train/test/validation) e.g. with flag -> ers/images/polyp/1.png, without flag -> test/ers/images/polyp/1.png",
+                        help="Flag specifying whether the output path should ignore dataset-type (train/test/validation) e.g. with flag -> ers/images/polyp/1.png, without flag -> test/ers/images/polyp/1.png",
                         default=False,
                         action="store_true",
                         required=False)
     parser.add_argument("--path-ignore-dataset-name",
-                        help="Flag specyfing whether the output path should ignore dataset name (examples: hyperkvasir/ers) e.g. with flag -> test/images/polyp/1.png, without flag -> test/ers/images/polyp/1.png",
+                        help="Flag specifying whether the output path should ignore dataset name (examples: hyperkvasir/ers) e.g. with flag -> test/images/polyp/1.png, without flag -> test/ers/images/polyp/1.png",
                         default=False,
                         action="store_true",
                         required=False)
@@ -105,7 +105,7 @@ def setup_argument_parser():
                         help="Use sequences for ERS dataset (e.g. \"seq_01\")")
     parser.add_argument("--ers-use-empty-masks",
                         action="store_true",
-                        help="Flag specifying whether images with empty mask files should be used for segmentation. Independently, script will use empty mas files that belong to healthy classes.")
+                        help="Flag specifying whether images with empty mask files should be used for segmentation. Independently, script will use empty mask files that belong to healthy classes.")
     parser.add_argument("--ers-class-mapper-path",
                         type=file_path,
                         help="Localization of class mapper yaml file. Mapping is done only for ers dataset. Records with keys that are not mapped in the file will be skipped.",
@@ -114,9 +114,9 @@ def setup_argument_parser():
     return parser
 
 
-def parse_args():
+def parse_args(args):
     parser = setup_argument_parser()
-    args = parser.parse_args()
+    args = parser.parse_args(args)
 
     if args.hyperkvasir_path is None and args.ers_path is None:
         parser.error("At least one of --hyperkvasir-path and --ers-path required")
@@ -130,7 +130,17 @@ def parse_args():
         args.test_size = DEFAULT_TEST_SIZE
         args.validation_size = DEFAULT_VALIDATION_SIZE
     elif missing_sizes_count > 1:
-        parser.error("Only one of --train-size,--test-size and --validation-size can be skipped")
+        if args.train_size == 1:
+            args.test_size = 0
+            args.validation_size = 0
+        elif args.test_size == 1:
+            args.train_size = 0
+            args.validation_size = 0
+        elif args.validation_size == 1:
+            args.train_size = 0
+            args.test_size = 0
+        else:
+            parser.error("Only one of --train-size,--test-size and --validation-size can be skipped (set one to 1.0 or provide another one)")
     if args.train_size == EMPTY_FLOAT:
         args.train_size = 1 - args.test_size - args.validation_size
     if args.test_size == EMPTY_FLOAT:
@@ -149,18 +159,18 @@ def parse_args():
     if args.ers_class_mapper_path is None and args.ers_path is not None:
         print("[INFO] No ERS mapper specified. Default behaviour will be used.")
     if args.training_type == TrainingType.MULTILABEL_CLASSIFICATION and args.mask_mode is not None:
-        print("[INFO] Ignoring mask-mode parameter for classifcation training type")
+        print("[INFO] Ignoring mask-mode parameter for classification training type")
     if args.hyperkvasir_path is not None and args.training_type != TrainingType.BINARY_SEG:
         print("[INFO] It is not recommended to use hyperkvasir feature of this script for non binary segmentation purposes")
 
     return args
 
 
-def main():
+def main(args):
     setup_argument_parser()
-    args = parse_args()
+    args = parse_args(args)
     DatasetCreator(args).create()
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])

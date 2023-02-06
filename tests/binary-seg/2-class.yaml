@@ -1,0 +1,12 @@
+disease:
+  classes:
+    - c01
+    - c02
+    - c03
+  positive: true
+normal:
+  classes:
+    - h01
+    - h02
+    - h03
+  positive: false
