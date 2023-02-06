@@ -123,6 +123,7 @@ When set to `multilabel-classification`:
 Setting to `binary-seg` is useful for 2 class segmentation problems like disease and normal. In this mode, there will be no color reversing in classes labeled as positive in ERS class mapping.  
 - `--hyperkvasir-path HYPERKVASIR_PATH`  
 Path for Hyperkvasir dataset (must contain folders `labeled-images` and `segmented-images`)  
+  NOTE! Current implementation only supports class "polyps" from Hyperkvasir dataset, future work needed to handle whole dataset
 - `--ers-path ERS_PATH`  
 Path for ERS dataset (must contain patient id directories e.g. `0001`)  
 - `--ers-use-seq`  
